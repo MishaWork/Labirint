@@ -1,0 +1,1514 @@
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Mihail\Desktop\c++\Labirint\Space.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#6: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x66253906 в функции SymGetLineFromAddrW64(). Попытка прочесть данные по адресу 0x00000014. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#5: TXLib [Ver: 00173a, Rev: 105, Date: 2018-06-12 00:00:00 +0300], Instance: 0x004FE2D0 (32-bit), Flags: CMdrE0, Thread: 0x3060 (Canvas). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x66253906 in C:\WINDOWS\System32\KERNELBASE.dll: CreateRemoteThreadE()
+# 1 0x744BDE04 in C:\WINDOWS\System32\KERNELBASE.dll: LCMapStringEx()
+# 3 0x66244DA5 in C:\WINDOWS\System32\KERNELBASE.dll: W()
+# 4 0x744D14AE in C:\WINDOWS\System32\KERNELBASE.dll: G()
+# 5 0x744BD149 in C:\WINDOWS\System32\KERNELBASE.dll: 
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+# 1 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+# 2 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+# 3 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+# 4 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+# 5 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+# 6 in const char* {anonymous}::TX::_txCaptureStackBackTrac   7333:         { $ _txConsole_Detach (waitableParent && !externTerm); }
+   7   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &mo   7190:     if (retcode != 0) txOutputDebugPrintf ("%s - WARNING: %s (%d) called\n", _TX_VERSION, __func__, retcode);
+   7191: 
+=> 7192: $1  _txCleanup();
+   7193: 
+   7194:     Win32::exit (retcode);
+
+# 8 in unsigned int {anonymous}::TX::_txCanvas_ThreadProc(void*) at C:\Users\Mihail\Desktop\TX\TXLib.h (7773):
+
+   7771: $   if (_txRunning && _txMain)         // Main window is destroyed but main() is still running.
+   7772:         {                              // No chances for good termination, so use exit().
+=> 7773: $       ::exit ((int) msg.wParam);
+   7774:         }
+   7775: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2018-06-12 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Mihail\Desktop\TX\TXLib.h
+Compiled:	Dec 15 2018 19:36:20, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Dec 15 2018 19:36:23
+
+Run file:	C:\Users\Mihail\Desktop\c++\Labirint\Space.exe
+Directory:	C:\Users\Mihail\Desktop\c++\Labirint
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Mihail\Desktop\c++\Labirint\Space.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#6: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x66253906 в функции SymGetLineFromAddrW64(). Попытка прочесть данные по адресу 0x00000014. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#5: TXLib [Ver: 00173a, Rev: 105, Date: 2018-06-12 00:00:00 +0300], Instance: 0x004FE2D0 (32-bit), Flags: CMdrE0, Thread: 0x2DA0 (Main), errno: 22 (Invalid argument). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x66253906 in C:\WINDOWS\System32\KERNELBASE.dll: CreateRemoteThreadE()
+# 1 0x744BDE04 in C:\WINDOWS\System32\KERNELBASE.dll: LCMapStringEx()
+# 3 0x66244DA5 in C:\WINDOWS\System32\KERNELBASE.dll: W()
+# 4 0x744D14AE in C:\WINDOWS\System32\KERNELBASE.dll: G()
+# 5 0x744BD149 in C:\WINDOWS\System32\KERNELBASE.dll: 
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+# 1 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+# 2 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+# 3 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+# 4 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+# 5 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+# 6 in const char* {anonymous}::TX::_txCaptureStackBackTrac   7333:         { $ _txConsole_Detach (waitableParent && !externTerm); }
+   7   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &mo   7190:     if (retcode != 0) txOutputDebugPrintf ("%s - WARNING: %s (%d) called\n", _TX_VERSION, __func__, retcode);
+   7191: 
+=> 7192: $1  _txCleanup();
+   7193: 
+   7194:     Win32::exit (retcode);
+
+# 8 in unsigned int {anonymous}::TX::_txC  11628: $1  POINT err = {-1, -1};
+  11629: 
+=>11630: $   if (_TX_TXWINDOW_FAILED()) return err;
+  11631: 
+  11632: $   return _txMousePos;
+
+# 8 in void Rocket() at C:\Users\Mihail\Desktop\c++\Labirint\Space.cpp (65):
+
+     63:         //printf ("старый идиот %d\n", MouseY - RocketY);
+     64: 
+=>   65:         printf ("Mouse %d%d\n", txMouseX (), txMouseY ());
+     66: 
+     67:         if (MouseX - RocketX < 0)
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2018-06-12 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Mihail\Desktop\TX\TXLib.h
+Compiled:	Dec 15 2018 19:36:20, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Dec 15 2018 19:36:23
+
+Run file:	C:\Users\Mihail\Desktop\c++\Labirint\Space.exe
+Directory:	C:\Users\Mihail\Desktop\c++\Labirint
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Mihail\Desktop\c++\Labirint\Space.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#3: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x66253906 в функции SymGetLineFromAddrW64(). Попытка прочесть данные по адресу 0x00000014. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#3: TXLib [Ver: 00173a, Rev: 105, Date: 2018-06-12 00:00:00 +0300], Instance: 0x004FE2D0 (32-bit), Flags: CMdrE0, Thread: 0xFC0 (Main), GetLastError(): 87 (Параметр задан неверно). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x66253906 in C:\Users\Mihail\Desktop\TX\Windows\MgwHelp32.dll: SymGetLineFromAddrW64()
+# 1 0x744BDE04 in C:\WINDOWS\System32\KERNELBASE.dll: CreateRemoteThreadEx()
+# 2 0x744C1FC2 in C:\WINDOWS\System32\KERNELBASE.dll: LCMapStringEx()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+# 1 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+# 2 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\  11628: $1  POINT err = {-1, -1};
+  11629: 
+=>11630: $   if (_TX_TXWINDOW_FAILED()) return err;
+  11631: 
+  11632: $   return _txMousePos;
+
+# 3 in void Rocket() at C:\Users\Mihail\Desktop\c++\Labirint\Space.cpp (65):
+
+     63:         //printf ("старый идиот %d\n", MouseY - RocketY);
+     64: 
+=>   65:         printf ("Mouse %d%d\n", txMouseX (), txMouseY ());
+     66: 
+     67:         if (MouseX - RocketX < 0)
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2018-06-12 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Mihail\Desktop\TX\TXLib.h
+Compiled:	Dec 15 2018 19:40:49, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Dec 15 2018 19:40:52
+
+Run file:	C:\Users\Mihail\Desktop\c++\Labirint\Space.exe
+Directory:	C:\Users\Mihail\Desktop\c++\Labirint
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Mihail\Desktop\c++\Labirint\Space.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#3: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x66253906 в функции SymGetLineFromAddrW64(). Попытка прочесть данные по адресу 0x00000014. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#4: TXLib [Ver: 00173a, Rev: 105, Date: 2018-06-12 00:00:00 +0300], Instance: 0x004FE2D0 (32-bit), Flags: CMdrE0, Thread: 0xFC0 (Main), GetLastError(): 87 (Параметр задан неверно). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x66253906 in C:\Users\Mihail\Desktop\TX\Windows\MgwHelp32.dll: SymGetLineFromAddrW64()
+# 1 0x744BDE04 in C:\WINDOWS\System32\KERNELBASE.dll: CreateRemoteThreadEx()
+# 2 0x744C1FC2 in C:\WINDOWS\System32\KERNELBASE.dll: LCMapStringEx()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+# 1 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+# 2 in POINT {anonymous}::TX::txMousePos() at C:\Users\Mihail\Desktop\TX\TXLib.h (11630):
+
+  11628: $1  POINT err = {-1, -1};
+  11629: 
+=>11630: $   if (_TX_TXWINDOW_FAILED()) return err;
+  11631: 
+  11632: $   return _txMousePos;
+
+# 3 in void Rocket() at C:\Users\Mihail\Desktop\c++\Labirint\Space.cpp (65):
+
+     63:         //printf ("старый идиот %d\n", MouseY - RocketY);
+     64: 
+=>   65:         printf ("Mouse %d%d\n", txMouseX (), txMouseY ());
+     66: 
+     67:         if (MouseX - RocketX < 0)
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2018-06-12 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Mihail\Desktop\TX\TXLib.h
+Compiled:	Dec 15 2018 19:40:49, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Dec 15 2018 19:40:51
+
+Run file:	C:\Users\Mihail\Desktop\c++\Labirint\Space.exe
+Directory:	C:\Users\Mihail\Desktop\c++\Labirint
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Mihail\Desktop\c++\Labirint\Space.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#3: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x66253906 в функции SymGetLineFromAddrW64(). Попытка прочесть данные по адресу 0x00000014. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#4: TXLib [Ver: 00173a, Rev: 105, Date: 2018-06-12 00:00:00 +0300], Instance: 0x004FE2D0 (32-bit), Flags: CMdrE0, Thread: 0x764 (Canvas). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x66253906 in C:\Users\Mihail\Desktop\TX\Windows\MgwHelp32.dll: SymGetLineFromAddrW64()
+# 1 0x744BDE04 in C:\WINDOWS\System32\KERNELBASE.dll: CreateRemoteThreadEx()
+# 2 0x744C1FC2 in C:\WINDOWS\System32\KERNELBASE.dll: LCMapStringEx()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+# 1 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+# 2 in POINT {anonymous}::TX::txMousePos() at C:\Users\Mihail\Desktop\TX\TXLib.h (11630):
+
+  11628: $1  POINT err = {-1, -1};
+  11629: 
+=>11630: $   if (_TX_TXWINDOW_FAILED()) return err;
+  11631: 
+  11632: $   return _txMousePos;
+
+# 3 in void Rocket() at C:\Users\Mihail\Desktop\c++\Labirint\Space.cpp (65):
+
+     63:         //printf ("старый идиот %d\n", MouseY - RocketY);
+     64: 
+=>   65:         printf ("Mouse %d%d\n", txMouseX (), txMouseY ());
+     66: 
+     67:         if (MouseX - RocketX < 0)
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2018-06-12 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Mihail\Desktop\TX\TXLib.h
+Compiled:	Dec 15 2018 19:40:49, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Dec 15 2018 19:40:51
+
+Run file:	C:\Users\Mihail\Desktop\c++\Labirint\Space.exe
+Directory:	C:\Users\Mihail\Desktop\c++\Labirint
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Mihail\Desktop\c++\Labirint\Space.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#31: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x7764612F в функции RtlAllocateHeap(). Попытка прочесть данные по адресу 0x00000001. Также превышен лимит фатальных исключений _TX_FATAL_EXCEPTIONS_LIMIT (16). Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#2: TXLib [Ver: 00173a, Rev: 105, Date: 2018-06-12 00:00:00 +0300], Instance: 0x004FE2D0 (32-bit), Flags: CMdrE0, Thread: 0x1898 (Canvas). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x7764612F in C:\WINDOWS\SYSTEM32\ntdll.dll: RtlAllocateHeap()
+# 1 0x776449C9 in C:\WINDOWS\SYSTEM32\ntdll.dll: RtlAllocateHeap()
+# 2 0x7764483E in C:\WINDOWS\SYSTEM32\ntdll.dll: RtlAllocateHeap()
+# 3 0x75E37909 in C:\WINDOWS\System32\msvcrt.dll: realloc()
+# 4 0x75E3701A in C:\WINDOWS\System32\msvcrt.dll: calloc()
+# 5 0x662524E6 in C:\Users\Mihail\Desktop\TX\Windows\MgwHelp32.dll: SymGetLineFromAddrW64()
+# 6 0x7764492A in C:\WINDOWS\SYSTEM32\ntdll.dll: RtlAllocateHeap()
+# 7 0x7764483E in C:\WINDOWS\SYSTEM32\ntdll.dll: RtlAllocateHeap()
+# 8 0x75E37909 in C:\WINDOWS\System32\msvcrt.dll: realloc()
+# 9 0x75E3701A in C:\WINDOWS\System32\msvcrt.dll: calloc()
+#12 0x74AAD149 in C:\WINDOWS\System32\KERNELBASE.dll: GetModuleHandleExW()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+# 1 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+# 2 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+# 3 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+# 4 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+# 5 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+# 6 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+# 7 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+# 8 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+# 9 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#10 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#11 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#12 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#13 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#14 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#15 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#16 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#17 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#18 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#19 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#20 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#21 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#22 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#23 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#24 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#25 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#26 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#27 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#28 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#29 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#30 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#31 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#32 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#33 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#34 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#35 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#36 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#37 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#38 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#39 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#40 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#41 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#42 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#43 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#44 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#45 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#46 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#47 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#48 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#49 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#50 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#51 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#52 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#53 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#54 in int {anonymous}::TX::_txStackWalk(int, size_t, void**, long unsigned int*, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9851):
+
+   9849: $   for (n = -framesToSkip; n < (int) szCapture; n++)
+   9850:         {
+=> 9851: $       DWORD64 prev = frame.AddrStack.Offset;
+   9852: 
+   9853:         // Я злой и страшный серый walk. Я в поросятах знаю talk.
+
+#55 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9707):
+
+   9705: 
+   9706: $   static void* capture [maxFrames] = {};
+=> 9707: $   int frames = _txStackWalk (framesToSkip + !context, SIZEARR (capture), capture, NULL, context, thread);
+   9708: 
+   9709: $   memset (trace, 0, sizeof (trace));
+
+#56 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#57 in int {anonymous}::TX::_txStackWalk(int, size_t, void**, long unsigned int*, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9851):
+
+   9849: $   for (n = -framesToSkip; n < (int) szCapture; n++)
+   9850:         {
+=> 9851: $       DWORD64 prev = frame.AddrStack.Offset;
+   9852: 
+   9853:         // Я злой и страшный серый walk. Я в поросятах знаю talk.
+
+#58 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9707):
+
+   9705: 
+   9706: $   static void* capture [maxFrames] = {};
+=> 9707: $   int frames = _txStackWalk (framesToSkip + !context, SIZEARR (capture), capture, NULL, context, thread);
+   9708: 
+   9709: $   memset (trace, 0, sizeof (trace));
+
+#59 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#60 in int {anonymous}::TX::_txStackWalk(int, size_t, void**, long unsigned int*, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9851):
+
+   9849: $   for (n = -framesToSkip; n < (int) szCapture; n++)
+   9850:         {
+=> 9851: $       DWORD64 prev = frame.AddrStack.Offset;
+   9852: 
+   9853:         // Я злой и страшный серый walk. Я в поросятах знаю talk.
+
+#61 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9707):
+
+   9705: 
+   9706: $   static void* capture [maxFrames] = {};
+=> 9707: $   int frames = _txStackWalk (framesToSkip + !context, SIZEARR (capture), capture, NULL, context, thread);
+   9708: 
+   9709: $   memset (trace, 0, sizeof (trace));
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2018-06-12 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Mihail\Desktop\TX\TXLib.h
+Compiled:	Dec 16 2018 17:57:26, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Dec 16 2018 17:57:28
+
+Run file:	C:\Users\Mihail\Desktop\c++\Labirint\Space.exe
+Directory:	C:\Users\Mihail\Desktop\c++\Labirint
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Mihail\Desktop\c++\Labirint\Space.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#31: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x7764612F в функции RtlAllocateHeap(). Попытка прочесть данные по адресу 0x00000001. Также превышен лимит фатальных исключений _TX_FATAL_EXCEPTIONS_LIMIT (16). Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции _set_se_translator() вы можете сами обработать эту ошибку.
+
+#3: TXLib [Ver: 00173a, Rev: 105, Date: 2018-06-12 00:00:00 +0300], Instance: 0x004FE2D0 (32-bit), Flags: CMdrE0, Thread: 0x1898 (Canvas). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x7764612F in C:\WINDOWS\SYSTEM32\ntdll.dll: RtlAllocateHeap()
+# 1 0x776449C9 in C:\WINDOWS\SYSTEM32\ntdll.dll: RtlAllocateHeap()
+# 2 0x7764483E in C:\WINDOWS\SYSTEM32\ntdll.dll: RtlAllocateHeap()
+# 3 0x75E37909 in C:\WINDOWS\System32\msvcrt.dll: realloc()
+# 4 0x75E3701A in C:\WINDOWS\System32\msvcrt.dll: calloc()
+# 5 0x662524E6 in C:\Users\Mihail\Desktop\TX\Windows\MgwHelp32.dll: SymGetLineFromAddrW64()
+# 6 0x7764492A in C:\WINDOWS\SYSTEM32\ntdll.dll: RtlAllocateHeap()
+# 7 0x7764483E in C:\WINDOWS\SYSTEM32\ntdll.dll: RtlAllocateHeap()
+# 8 0x75E37909 in C:\WINDOWS\System32\msvcrt.dll: realloc()
+# 9 0x75E3701A in C:\WINDOWS\System32\msvcrt.dll: calloc()
+#12 0x74AAD149 in C:\WINDOWS\System32\KERNELBASE.dll: GetModuleHandleExW()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+# 1 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+# 2 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+# 3 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+# 4 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+# 5 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+# 6 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+# 7 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+# 8 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+# 9 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#10 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#11 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#12 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#13 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#14 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#15 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#16 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#17 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#18 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#19 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#20 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#21 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#22 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#23 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#24 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#25 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#26 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#27 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#28 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#29 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#30 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#31 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#32 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#33 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#34 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#35 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#36 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#37 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#38 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#39 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#40 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#41 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#42 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#43 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#44 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#45 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#46 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#47 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#48 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#49 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#50 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#51 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+#52 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9724):
+
+   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &module);          }
+   9725:         if (readSource && !inTX) { $        _txSymGetFromAddr ((void*) 1,        NULL, NULL,  NULL, &source, 2); }
+   9726: 
+
+#53 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#54 in int {anonymous}::TX::_txStackWalk(int, size_t, void**, long unsigned int*, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9851):
+
+   9849: $   for (n = -framesToSkip; n < (int) szCapture; n++)
+   9850:         {
+=> 9851: $       DWORD64 prev = frame.AddrStack.Offset;
+   9852: 
+   9853:         // Я злой и страшный серый walk. Я в поросятах знаю talk.
+
+#55 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9707):
+
+   9705: 
+   9706: $   static void* capture [maxFrames] = {};
+=> 9707: $   int frames = _txStackWalk (framesToSkip + !context, SIZEARR (capture), capture, NULL, context, thread);
+   9708: 
+   9709: $   memset (trace, 0, sizeof (trace));
+
+#56 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#57 in int {anonymous}::TX::_txStackWalk(int, size_t, void**, long unsigned int*, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9851):
+
+   9849: $   for (n = -framesToSkip; n < (int) szCapture; n++)
+   9850:         {
+=> 9851: $       DWORD64 prev = frame.AddrStack.Offset;
+   9852: 
+   9853:         // Я злой и страшный серый walk. Я в поросятах знаю talk.
+
+#58 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9707):
+
+   9705: 
+   9706: $   static void* capture [maxFrames] = {};
+=> 9707: $   int frames = _txStackWalk (framesToSkip + !context, SIZEARR (capture), capture, NULL, context, thread);
+   9708: 
+   9709: $   memset (trace, 0, sizeof (trace));
+
+#59 in long int {anonymous}::TX::_txOnExceptionSEH(EXCEPTION_POINTERS*, const char*) at C:\Users\Mihail\Desktop\TX\TXLib.h (9222):
+
+   9220: $       unsigned err = GetLastError();
+   9221: 
+=> 9222: $       const char* stackTrace = _txCaptureStackBackTrace (0, true, exc->ContextRecord);
+   9223: 
+   9224: $       _txDumpExceptionSEH (_txDumpSE,  (ptrdiff_t) sizeof (_txDumpSE)  - 1, exc->ExceptionRecord, func);
+
+#60 in int {anonymous}::TX::_txStackWalk(int, size_t, void**, long unsigned int*, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9851):
+
+   9849: $   for (n = -framesToSkip; n < (int) szCapture; n++)
+   9850:         {
+=> 9851: $       DWORD64 prev = frame.AddrStack.Offset;
+   9852: 
+   9853:         // Я злой и страшный серый walk. Я в поросятах знаю talk.
+
+#61 in const char* {anonymous}::TX::_txCaptureStackBackTrace(int, bool, CONTEXT*, HANDLE) at C:\Users\Mihail\Desktop\TX\TXLib.h (9707):
+
+   9705: 
+   9706: $   static void* capture [maxFrames] = {};
+=> 9707: $   int frames = _txStackWalk (framesToSkip + !context, SIZEARR (capture), capture, NULL, context, thread);
+   9708: 
+   9709: $   memset (trace, 0, sizeof (trace));
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2018-06-12 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Mihail\Desktop\TX\TXLib.h
+Compiled:	Dec 16 2018 17:57:26, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Dec 16 2018 17:57:28
+
+Run file:	C:\Users\Mihail\Desktop\c++\Labirint\Space.exe
+Directory:	C:\Users\Mihail\Desktop\c++\Labirint
+
+--------------------------------------------------
