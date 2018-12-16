@@ -108,42 +108,42 @@ void Turtle (int Length, int Wight, HDC Lab)
 
         //if (Pixel == TX_BLACK) {TurtleX = 150, TurtleY = 460;}
 
-        COLORREF Pixel = txGetPixel (TurtleX+TurtleCentX, TurtleY+TurtleCentY);
+        COLORREF Pixel = TX_WHITE;  //txGetPixel (TurtleX+TurtleCentX, TurtleY+TurtleCentY);
 
         printf ("Pixel %d\n", Pixel);
 
-        txAlphaBlend (txDC (), CoinX, CoinY, CoinA, 0, Coin);
+       // txAlphaBlend (txDC (), CoinX, CoinY, CoinA, 0, Coin);
 
-        txAlphaBlend (txDC (), CoinXb, CoinYb, CoinAb, 0, CoinB);
+       // txAlphaBlend (txDC (), CoinXb, CoinYb, CoinAb, 0, CoinB);
 
-        txAlphaBlend (txDC (), TurtleX, TurtleY, TurtleCentX*2, 0, Turtle, xSource);
-        txSetFillColor (TX_PINK);
-        txCircle (TurtleX+TurtleCentX, TurtleY+TurtleCentY, 2);
+        //txAlphaBlend (txDC (), TurtleX, TurtleY, TurtleCentX*2, 0, Turtle, xSource);
+       // txSetFillColor (TX_PINK);
+        //txCircle (TurtleX+TurtleCentX, TurtleY+TurtleCentY, 2);
 
-        txSetFillColor (TX_BLACK);
+        //txSetFillColor (TX_BLACK);
 
-        txSetColor (TX_RED);
+        //txSetColor (TX_RED);
 
-        txRectangle (1800, 0, 1920, 80);
+        //txRectangle (1800, 0, 1920, 80);
 
         char Str [30] = "";
 
         sprintf (Str, "%.1lf", Time);
 
-        txSelectFont ("Bad Mofo", 100, 33, 100);
+        //txSelectFont ("Bad Mofo", 100, 33, 100);
 
-        txTextOut (1795, -15, Str);
+       // txTextOut (1795, -15, Str);
 
-        LifeCounting (&Life, Pixel, &TurtleX, &TurtleY, StartTurtleX, StartTurtleY, MaxLife);
+       // LifeCounting (&Life, Pixel, &TurtleX, &TurtleY, StartTurtleX, StartTurtleY, MaxLife);
 
-        Controlling (&TurtleX, &TurtleY, TurtleSpeed, TurtleCentX, &xSource);
+       // Controlling (&TurtleX, &TurtleY, TurtleSpeed, TurtleCentX, &xSource);
 
-        txSetColor (TX_PINK);
-
-
+        //txSetColor (TX_PINK);
 
 
-        if (Distance2 < 10)
+
+
+        /*if (Distance2 < 10)
             {
             Movments ();
             }
@@ -156,9 +156,10 @@ void Turtle (int Length, int Wight, HDC Lab)
 
         if (DistanceCoinBad < 30)
             {
-            TurtleX = 100;
-            TurtleY =0 40;
+            TurtleX = 200;
+            TurtleY = 90;
             }
+           */ 
 
         if (Pixel == RGB (255, 0, 0)) Life = MaxLife;
 

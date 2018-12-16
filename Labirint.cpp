@@ -15,6 +15,8 @@ int main ()
     //_txWindowStyle &= ~WS_CAPTION; // FullScreen: окно без заголовка, размером с экран
     txCreateWindow (GetSystemMetrics (SM_CXSCREEN), GetSystemMetrics (SM_CYSCREEN));
 
+    txUpdateWindow (false);
+
     labirint ();
 
 
@@ -97,9 +99,9 @@ void Turtle (int Length, int Wight, HDC Lab)
 
         Levels (&Level, Lab, Labirint, Distance1, &TurtleX, &TurtleY, Length, Wight, StartTurtleX, StartTurtleY);
 
-        printf ("Distance1 %d\n", Distance1);
+        //printf ("Distance1 %d\n", Distance1);
 
-        printf ("Distance2 %d\n", Distance2);
+        //printf ("Distance2 %d\n", Distance2);
 
         //printf ("TurtleX %d\n", TurtleX);
         //printf ("TurtleY %d\n", TurtleY);
@@ -108,9 +110,11 @@ void Turtle (int Length, int Wight, HDC Lab)
 
         //if (Pixel == TX_BLACK) {TurtleX = 150, TurtleY = 460;}
 
+        printf (" >>>%%%% %d\n", 80);
+
         COLORREF Pixel = txGetPixel (TurtleX+TurtleCentX, TurtleY+TurtleCentY);
 
-        printf ("Pixel %d\n", Pixel);
+        //printf ("Pixel %d\n", Pixel);
 
         txAlphaBlend (txDC (), CoinX, CoinY, CoinA, 0, Coin);
 
