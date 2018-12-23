@@ -5,7 +5,7 @@ void Turtle (int Length, int Wight, HDC Lab);
 int Distance (int X1, int Y1, int X2, int Y2);
 void Movments ();
 int DistanceEnemie (int TurtleX, int TurtleY, int EnemieX, int EnemieY);
-void LifeCounting (int *Life, COLORREF Pixel, int *TurtleX, int *TurtleY, int StartTurtleX, int StartTurtleY, int MaxLife);
+void LifeCounting (int *Life, COLORREF Pixel, int *TurtleX, int *TurtleY, int StartTurtleX, int StartTurtleY, int MaxLife, HDC Message);
 void Levels (int *Level, HDC Lab, HDC Labirint, int Distance1, int *TurtleX, int *TurtleY, int Length, int Wight, int StartTurtleX, int StartTurtleY);
 void Controlling (int *TurtleX, int *TurtleY, int TurtleSpeed, int TurtleCentX, int *xSource);
 
@@ -53,6 +53,9 @@ void Turtle (int Length, int Wight, HDC Lab)
 
     HDC CoinB = txLoadImage ("coinBad.bmp");
     if (CoinB == NULL) { txMessageBox ("coinBad.bmp isn't found"); return; }
+
+    HDC Message = txLoadImage ("message box.bmp");
+    if (Message == NULL) { txMessageBox ("message box.bmp isn't found"); return; }
 
     const int StartTurtleX = 150;
     const int StartTurtleY = 460;
@@ -110,7 +113,7 @@ void Turtle (int Length, int Wight, HDC Lab)
 
         //if (Pixel == TX_BLACK) {TurtleX = 150, TurtleY = 460;}
 
-        printf (" >>>%%%% %d\n", 80);
+        printf (" потерял жизнь%d\n", Life);
 
         COLORREF Pixel = txGetPixel (TurtleX+TurtleCentX, TurtleY+TurtleCentY);
 
@@ -138,7 +141,7 @@ void Turtle (int Length, int Wight, HDC Lab)
 
         txTextOut (1795, -15, Str);
 
-        LifeCounting (&Life, Pixel, &TurtleX, &TurtleY, StartTurtleX, StartTurtleY, MaxLife);
+        LifeCounting (&Life, Pixel, &TurtleX, &TurtleY, StartTurtleX, StartTurtleY, MaxLife, Message);
 
         Controlling (&TurtleX, &TurtleY, TurtleSpeed, TurtleCentX, &xSource);
 
@@ -180,7 +183,7 @@ int Distance (int X1, int Y1, int X2, int Y2)
 
     }
 
-void LifeCounting (int *Life, COLORREF Pixel, int *TurtleX, int *TurtleY, int StartTurtleX, int StartTurtleY, int MaxLife)
+void LifeCounting (int *Life, COLORREF Pixel, int *TurtleX, int *TurtleY, int StartTurtleX, int StartTurtleY, int MaxLife, HDC Message)
     {
     if (Pixel == TX_BLACK)
         {
@@ -196,6 +199,14 @@ void LifeCounting (int *Life, COLORREF Pixel, int *TurtleX, int *TurtleY, int St
     if (*TurtleX == StartTurtleX && *TurtleY == StartTurtleY)
         {
         *Life = MaxLife;
+        }
+
+    if (*Life == 1)
+        {
+        txAlphaBlend (txDC (), *TurtleX + 10, *TurtleY - 40, 0, 0, Message);
+        txSetColor (TX_YELLOW);
+        txSelectFont ("Comic Sans MS", 13);
+        txTextOut (*TurtleX + 13, *TurtleY - 32, "Осталась одна жизнь");
         }
 
     }
