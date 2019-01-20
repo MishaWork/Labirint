@@ -1,5 +1,12 @@
 #include "TXlib.h"
 
+struct Object
+    {
+    int X;
+    int Y;
+    HDC Image;
+    };
+
 void labirint ();
 void Turtle (int Length, int Wight, HDC Lab);
 int Distance (int X1, int Y1, int X2, int Y2);
@@ -48,12 +55,6 @@ void Turtle (int Length, int Wight, HDC Lab)
     HDC Labirint = txLoadImage ("labirint2.bmp");
     if (Labirint == NULL) { txMessageBox ("labirint2.bmp isn't found"); return; }
 
-    HDC Coin = txLoadImage ("coin.bmp");
-    if (Coin == NULL) { txMessageBox ("coin.bmp isn't found"); return; }
-
-    HDC CoinB = txLoadImage ("coinBad.bmp");
-    if (CoinB == NULL) { txMessageBox ("coinBad.bmp isn't found"); return; }
-
     HDC Message = txLoadImage ("message box.bmp");
     if (Message == NULL) { txMessageBox ("message box.bmp isn't found"); return; }
 
@@ -65,18 +66,19 @@ void Turtle (int Length, int Wight, HDC Lab)
     int TurtleX = StartTurtleX;
     int TurtleY = StartTurtleY;
 
-    int CoinX = 580;
-    int CoinY = 500;
+    Object Coin = {580, 500, txLoadImage ("coin.bmp")};
+    if (Coin.Image == NULL) { txMessageBox ("coin.bmp isn't found"); return; }
 
-    int CoinXb = 1640;
-    int CoinYb = 240;
+    Object CoinBad = {1640, 240, txLoadImage ("coinBad.bmp")};
+    if (CoinBad.Image == NULL) { txMessageBox ("coinBad.bmp isn't found"); return; }
+
 
 
     const int MaxLife = 9;
 
-    int CoinA = txGetExtentX (Coin);
+    int CoinA = txGetExtentX (Coin.Image);
 
-    int CoinAb = txGetExtentX (CoinB);
+    int CoinAb = txGetExtentX (CoinBad.Image);
 
     int GameTime = GetTickCount ();
 
@@ -95,9 +97,9 @@ void Turtle (int Length, int Wight, HDC Lab)
 
         int Distance2 = Distance (TurtleX, TurtleY, 200, 460);
 
-        int DistanceCoin = Distance (TurtleX, TurtleY, CoinX, CoinY);
+        int DistanceCoin = Distance (TurtleX, TurtleY, Coin.X, Coin.Y);
 
-        int DistanceCoinBad = Distance (TurtleX, TurtleY, CoinXb, CoinYb);
+        int DistanceCoinB = Distance (TurtleX, TurtleY, CoinBad.X, CoinBad.Y);
 
 
         Levels (&Level, Lab, Labirint, Distance1, &TurtleX, &TurtleY, Length, Wight, StartTurtleX, StartTurtleY);
@@ -119,9 +121,9 @@ void Turtle (int Length, int Wight, HDC Lab)
 
         //printf ("Pixel %d\n", Pixel);
 
-        txAlphaBlend (txDC (), CoinX, CoinY, CoinA, 0, Coin);
+        txAlphaBlend (txDC (), Coin.X, Coin.Y, CoinA, 0, Coin.Image);
 
-        txAlphaBlend (txDC (), CoinXb, CoinYb, CoinAb, 0, CoinB);
+        txAlphaBlend (txDC (), CoinBad.X, CoinBad.Y, CoinAb, 0, CoinBad.Image);
 
         txAlphaBlend (txDC (), TurtleX, TurtleY, TurtleCentX*2, 0, Turtle, xSource);
         txSetFillColor (TX_PINK);
@@ -161,7 +163,7 @@ void Turtle (int Length, int Wight, HDC Lab)
             TurtleY = 400;
             }
 
-        if (DistanceCoinBad < 30)
+        if (DistanceCoinB < 30)
             {
             TurtleX = 200;
             TurtleY = 90;
@@ -238,13 +240,6 @@ void Controlling (int *TurtleX, int *TurtleY, int TurtleSpeed, int TurtleCentX, 
     if (GetAsyncKeyState (VK_UP))    {*TurtleY = *TurtleY - TurtleSpeed*2,   *xSource = TurtleCentX*2;}
     if (GetAsyncKeyState (VK_DOWN))  {*TurtleY = *TurtleY + TurtleSpeed*2,   *xSource = TurtleCentX*6;}
     }
-
-
-
-
-
-
-
 
 void Movments ()
     {
