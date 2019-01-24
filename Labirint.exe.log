@@ -4001,3 +4001,65 @@ Run file:	C:\Users\Mihail\Desktop\c++\Labirint\Labirint.exe
 Directory:	C:\Users\Mihail\Desktop\c++\Labirint
 
 --------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Mihail\Desktop\c++\Labirint\Labirint.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#2: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x662547A0 в функции SymGetLineFromAddrW64(). Попытка прочесть данные по адресу 0x0377F0D9. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#3: TXLib [Ver: 00173a, Rev: 105, Date: 2018-06-12 00:00:00 +0300], Instance: 0x004FF2D0 (32-bit), Flags: CMdrE0, Thread: 0x5EEC (Canvas), GetLastError(): 87 (
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x662547A0 in C:\Users\Mihail\Desktop\TX\Windows\MgwHelp32.dll: SymGetLineFromAddrW64()
+# 1 0x66257FB8 in C:\Users\Mihail\Desktop\TX\Windows\MgwHelp32.dll: SymGetLineFromAddrW64()
+# 2 0x66262053 in C:\Users\Mihail\Desktop\TX\Windows\MgwHelp32.dll: SymGetLineFromAddrW64()
+# 3 0x66259939 in C:\Users\Mihail\Desktop\TX\Windows\MgwHelp32.dll: SymGetLineFromAddrW64()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool {anonymous}::TX::_txSymGetFromAddr(void*, {anonymous}::TX::Win32::SYMBOL_INFO**, {anonymous}::TX::Win32::IMAGEHLP_LINE64**, const char**, const char**, int) at C:\Users\Mihail\Desktop\TX\TXLib.h (9960):
+
+   9958: 
+   9959: $       SetLastError (0);
+=> 9960: $       (_TX_CALL (MinGW::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(y)) ||
+   9961:         (_TX_CALL (Win32::SymFromAddr, (process, (uintptr_t) addr, &ofs, sym)) && RES_(Y)) ||
+   9962:             DBG_("SymFromAddr (0x%p) failed", addr);
+
+# 1 in const char* {anonymous}::TX::_txCaptureStackBackTrac   7333:         { $ _txConsole_Detach (waitableParent && !externTerm); }
+   7   9722: $       bool                    inTX   = false;
+   9723: 
+=> 9724:         if (addr)                { $ inTX = _txSymGetFromAddr ((char*) addr - 1, &sym, &line, &mo   7190:     if (retcode != 0) txOutputDebugPrintf ("%s - WARNING: %s (%d) called\n", _TX_VERSION, __func__, retcode);
+   7191: 
+=> 7192: $1  _txCleanup();
+   7193: 
+   7194:     Win32::exit (retcode);
+
+# 3 in unsigned int {anonymous}::TX::_txCanvas_ThreadProc(void*  10943: inline COLORREF txGetPixel (double x, do   7771: $   if (_txRunning && _txMain)         // Main window is destroyed but main() is still running.
+   7772:         {                              // No chances for good termination, so use exit().
+=> 7773: $       ::exit ((int) msg.wParam);
+   7774:         }
+   7775: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2018-06-12 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Mihail\Desktop\TX\TXLib.h
+Compiled:	Dec 27 2018 19:41:54, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Dec 27 2018 19:41:56
+
+Run file:	C:\Users\Mihail\Desktop\c++\Labirint\Labirint.exe
+Directory:	C:\Users\Mihail\Desktop\c++\Labirint
+
+--------------------------------------------------
+-------------------------

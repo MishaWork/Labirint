@@ -5,7 +5,7 @@ void Turtle (int Length, int Wight, HDC Lab);
 int Distance (int X1, int Y1, int X2, int Y2);
 void Movments ();
 int DistanceEnemie (int TurtleX, int TurtleY, int EnemieX, int EnemieY);
-void LifeCounting (int *Life, COLORREF Pixel, int *TurtleX, int *TurtleY, int StartTurtleX, int StartTurtleY, int MaxLife, HDC Message);
+void LifeCounting (int *Life, COLORREF Pixel, int *TurtleX, int *TurtleY, int StartTurtleX, int StartTurtleY, int MaxLife, HDC Message, int *Show);
 void Levels (int *Level, HDC Lab, HDC Labirint, int Distance1, int *TurtleX, int *TurtleY, int Length, int Wight, int StartTurtleX, int StartTurtleY);
 void Controlling (int *TurtleX, int *TurtleY, int TurtleSpeed, int TurtleCentX, int *xSource);
 
@@ -57,6 +57,12 @@ void Turtle (int Length, int Wight, HDC Lab)
     HDC Message = txLoadImage ("message box.bmp");
     if (Message == NULL) { txMessageBox ("message box.bmp isn't found"); return; }
 
+    HDC Chest = txLoadImage ("chest.bmp");
+    if (Chest == NULL) { txMessageBox ("chest.bmp isn't found"); return; }
+
+    HDC Spikes = txLoadImage ("spikes.bmp");
+    if (Spikes == NULL) { txMessageBox ("spikes.bmp isn't found"); return; }
+
     const int StartTurtleX = 150;
     const int StartTurtleY = 460;
     const int TurtleSpeed = 5;
@@ -65,11 +71,19 @@ void Turtle (int Length, int Wight, HDC Lab)
     int TurtleX = StartTurtleX;
     int TurtleY = StartTurtleY;
 
+    int ChestX = 1250;
+    int ChestY = 50;
+
+    int SpikeX = 670;
+    int SpikeY = 420;
+
     int CoinX = 580;
     int CoinY = 500;
 
     int CoinXb = 1640;
     int CoinYb = 240;
+
+    int SpikesOpened = 0;
 
 
     const int MaxLife = 9;
@@ -98,6 +112,12 @@ void Turtle (int Length, int Wight, HDC Lab)
         int DistanceCoin = Distance (TurtleX, TurtleY, CoinX, CoinY);
 
         int DistanceCoinBad = Distance (TurtleX, TurtleY, CoinXb, CoinYb);
+
+        int DistanceSpikes = Distance (TurtleX, TurtleY, SpikeX, SpikeY);
+
+        int DistanceChest = Distance (TurtleX, TurtleY, ChestX, ChestY);
+
+        int Show = 0;
 
 
         Levels (&Level, Lab, Labirint, Distance1, &TurtleX, &TurtleY, Length, Wight, StartTurtleX, StartTurtleY);
@@ -133,6 +153,10 @@ void Turtle (int Length, int Wight, HDC Lab)
 
         txRectangle (1800, 0, 1920, 80);
 
+        txAlphaBlend (txDC (), ChestX, ChestY, 0, 0, Chest);
+
+        txAlphaBlend (txDC (), SpikeX, SpikeY, 0, 0, Spikes);
+
         char Str [30] = "";
 
         sprintf (Str, "%.1lf", Time);
@@ -141,7 +165,7 @@ void Turtle (int Length, int Wight, HDC Lab)
 
         txTextOut (1795, -15, Str);
 
-        LifeCounting (&Life, Pixel, &TurtleX, &TurtleY, StartTurtleX, StartTurtleY, MaxLife, Message);
+        LifeCounting (&Life, Pixel, &TurtleX, &TurtleY, StartTurtleX, StartTurtleY, MaxLife, Message, &Show);
 
         Controlling (&TurtleX, &TurtleY, TurtleSpeed, TurtleCentX, &xSource);
 
@@ -167,6 +191,16 @@ void Turtle (int Length, int Wight, HDC Lab)
             TurtleY = 90;
             }
 
+        if (DistanceSpikes < 30 && SpikesOpened == 0)
+            {
+            Life = 0;
+            }
+
+        if (DistanceChest < 30)
+            {
+            SpikesOpened = 1;
+            }
+
         if (Pixel == RGB (255, 0, 0)) Life = MaxLife;
 
         txSleep (100);
@@ -183,11 +217,11 @@ int Distance (int X1, int Y1, int X2, int Y2)
 
     }
 
-void LifeCounting (int *Life, COLORREF Pixel, int *TurtleX, int *TurtleY, int StartTurtleX, int StartTurtleY, int MaxLife, HDC Message)
+void LifeCounting (int *Life, COLORREF Pixel, int *TurtleX, int *TurtleY, int StartTurtleX, int StartTurtleY, int MaxLife, HDC Message, int *Show)
     {
     if (Pixel == TX_BLACK)
         {
-        *Life = *Life - 1;
+        *Life = 0;
         }
 
     if (*Life == 0)
@@ -203,11 +237,22 @@ void LifeCounting (int *Life, COLORREF Pixel, int *TurtleX, int *TurtleY, int St
 
     if (*Life == 1)
         {
+        *Show = 1;
+        }
+
+    if (*Show == 1)
+        {
         txAlphaBlend (txDC (), *TurtleX + 10, *TurtleY - 40, 0, 0, Message);
         txSetColor (TX_YELLOW);
         txSelectFont ("Comic Sans MS", 13);
         txTextOut (*TurtleX + 13, *TurtleY - 32, "Осталась одна жизнь");
         }
+
+    if (*Life == 9)
+        {
+        *Show = 0;
+        }
+
 
     }
 
