@@ -14,7 +14,7 @@ void Movments ();
 int DistanceEnemie (int TurtleX, int TurtleY, int EnemieX, int EnemieY);
 void LifeCounting (int *Life, COLORREF Pixel, int *TurtleX, int *TurtleY, int StartTurtleX, int StartTurtleY, int MaxLife, HDC Message);
 void Levels (int *Level, HDC Lab, HDC Labirint, int Distance1, int *TurtleX, int *TurtleY, int Length, int Wight, int StartTurtleX, int StartTurtleY);
-void Controlling (int *TurtleX, int *TurtleY, int TurtleSpeed, int TurtleCentX, int *xSource);
+void Controlling (Object *Turtle, int TurtleSpeed, Object TurtleCent, int *xSource);
 
 
 int main ()
@@ -49,22 +49,11 @@ void labirint ()
 void Turtle (int Length, int Wight, HDC Lab)
     {
 
-    HDC Turtle = txLoadImage ("turtle.bmp");
-    if (Turtle == NULL) { txMessageBox ("turtle.bmp isn't found"); return; }
-
     HDC Labirint = txLoadImage ("labirint2.bmp");
     if (Labirint == NULL) { txMessageBox ("labirint2.bmp isn't found"); return; }
 
     HDC Message = txLoadImage ("message box.bmp");
     if (Message == NULL) { txMessageBox ("message box.bmp isn't found"); return; }
-
-    const int StartTurtleX = 150;
-    const int StartTurtleY = 460;
-    const int TurtleSpeed = 5;
-    const int TurtleCentX = txGetExtentX (Turtle)/4/2;
-    const int TurtleCentY = txGetExtentY (Turtle)/2;
-    int TurtleX = StartTurtleX;
-    int TurtleY = StartTurtleY;
 
     Object Coin = {580, 500, txLoadImage ("coin.bmp")};
     if (Coin.Image == NULL) { txMessageBox ("coin.bmp isn't found"); return; }
@@ -72,7 +61,14 @@ void Turtle (int Length, int Wight, HDC Lab)
     Object CoinBad = {1640, 240, txLoadImage ("coinBad.bmp")};
     if (CoinBad.Image == NULL) { txMessageBox ("coinBad.bmp isn't found"); return; }
 
+    Object StartTurtle = {150, 460};
 
+    Object Turtle = {StartTurtle.X, StartTurtle.Y, txLoadImage ("turtle.bmp")};
+    if (Turtle.Image == NULL) { txMessageBox ("turtle.bmp isn't found"); return; }
+
+    Object TurtleCent = {txGetExtentX (Turtle.Image)/4/2, txGetExtentY (Turtle.Image)/2};
+
+    const int TurtleSpeed = 5;
 
     const int MaxLife = 9;
 
@@ -93,16 +89,17 @@ void Turtle (int Length, int Wight, HDC Lab)
 
         double Time = (GetTickCount () - GameTime)/1000.0;
 
-        int Distance1 = Distance (TurtleX, TurtleY, 1750, 405);
+        int Distance1 = Distance (Turtle.X, Turtle.Y, 1750, 405);
 
-        int Distance2 = Distance (TurtleX, TurtleY, 200, 460);
+        int Distance2 = Distance (Turtle.X, Turtle.Y, 200, 460);
+        printf ("Адское пойло %d\n", Distance2);
 
-        int DistanceCoin = Distance (TurtleX, TurtleY, Coin.X, Coin.Y);
+        int DistanceCoin = Distance (Turtle.X, Turtle.Y, Coin.X, Coin.Y);
 
-        int DistanceCoinB = Distance (TurtleX, TurtleY, CoinBad.X, CoinBad.Y);
+        int DistanceCoinB = Distance (Turtle.X, Turtle.Y, CoinBad.X, CoinBad.Y);
 
 
-        Levels (&Level, Lab, Labirint, Distance1, &TurtleX, &TurtleY, Length, Wight, StartTurtleX, StartTurtleY);
+        Levels (&Level, Lab, Labirint, Distance1, &Turtle.X, &Turtle.Y, Length, Wight, StartTurtle.X, StartTurtle.Y);
 
         //printf ("Distance1 %d\n", Distance1);
 
@@ -117,7 +114,7 @@ void Turtle (int Length, int Wight, HDC Lab)
 
         printf (" потерял жизнь%d\n", Life);
 
-        COLORREF Pixel = txGetPixel (TurtleX+TurtleCentX, TurtleY+TurtleCentY);
+        COLORREF Pixel = txGetPixel (Turtle.X+TurtleCent.X, Turtle.Y+TurtleCent.Y);
 
         //printf ("Pixel %d\n", Pixel);
 
@@ -125,9 +122,9 @@ void Turtle (int Length, int Wight, HDC Lab)
 
         txAlphaBlend (txDC (), CoinBad.X, CoinBad.Y, CoinAb, 0, CoinBad.Image);
 
-        txAlphaBlend (txDC (), TurtleX, TurtleY, TurtleCentX*2, 0, Turtle, xSource);
+        txAlphaBlend (txDC (), Turtle.X, Turtle.Y, TurtleCent.X*2, 0, Turtle.Image, xSource);
         txSetFillColor (TX_PINK);
-        txCircle (TurtleX+TurtleCentX, TurtleY+TurtleCentY, 2);
+        txCircle (Turtle.X+TurtleCent.X, Turtle.Y+TurtleCent.Y, 2);
 
         txSetFillColor (TX_BLACK);
 
@@ -143,9 +140,9 @@ void Turtle (int Length, int Wight, HDC Lab)
 
         txTextOut (1795, -15, Str);
 
-        LifeCounting (&Life, Pixel, &TurtleX, &TurtleY, StartTurtleX, StartTurtleY, MaxLife, Message);
+        LifeCounting (&Life, Pixel, &Turtle.X, &Turtle.Y, StartTurtle.X, StartTurtle.Y, MaxLife, Message);
 
-        Controlling (&TurtleX, &TurtleY, TurtleSpeed, TurtleCentX, &xSource);
+        Controlling (&Turtle, TurtleSpeed, TurtleCent, &xSource);
 
         txSetColor (TX_PINK);
 
@@ -159,14 +156,14 @@ void Turtle (int Length, int Wight, HDC Lab)
 
         if (DistanceCoin < 30)
             {
-            TurtleX = 1560;
-            TurtleY = 400;
+            Turtle.X = 1560;
+            Turtle.Y = 400;
             }
 
         if (DistanceCoinB < 30)
             {
-            TurtleX = 200;
-            TurtleY = 90;
+            Turtle.X = 200;
+            Turtle.Y = 90;
             }
 
         if (Pixel == RGB (255, 0, 0)) Life = MaxLife;
@@ -174,7 +171,7 @@ void Turtle (int Length, int Wight, HDC Lab)
         txSleep (100);
         }
 
-    txDeleteDC (Turtle);
+    txDeleteDC (Turtle.Image);
     txDeleteDC (Labirint);
 
     }
@@ -233,12 +230,12 @@ void Levels (int *Level, HDC Lab, HDC Labirint, int Distance1, int *TurtleX, int
         }
     }
 
-void Controlling (int *TurtleX, int *TurtleY, int TurtleSpeed, int TurtleCentX, int *xSource)
+void Controlling (Object *Turtle, int TurtleSpeed, Object TurtleCent, int *xSource)
     {
-    if (GetAsyncKeyState (VK_RIGHT)) {*TurtleX = *TurtleX + TurtleSpeed*2,   *xSource = 0;}
-    if (GetAsyncKeyState (VK_LEFT))  {*TurtleX = *TurtleX - TurtleSpeed*2,   *xSource = TurtleCentX*4;}
-    if (GetAsyncKeyState (VK_UP))    {*TurtleY = *TurtleY - TurtleSpeed*2,   *xSource = TurtleCentX*2;}
-    if (GetAsyncKeyState (VK_DOWN))  {*TurtleY = *TurtleY + TurtleSpeed*2,   *xSource = TurtleCentX*6;}
+    if (GetAsyncKeyState (VK_RIGHT)) {(*Turtle).X = (*Turtle).X + TurtleSpeed*2,   *xSource = 0;}
+    if (GetAsyncKeyState (VK_LEFT))  {(*Turtle).X = (*Turtle).X - TurtleSpeed*2,   *xSource = TurtleCent.X*4;}
+    if (GetAsyncKeyState (VK_UP))    {(*Turtle).Y = (*Turtle).Y - TurtleSpeed*2,   *xSource = TurtleCent.X*2;}
+    if (GetAsyncKeyState (VK_DOWN))  {(*Turtle).Y = (*Turtle).Y + TurtleSpeed*2,   *xSource = TurtleCent.X*6;}
     }
 
 void Movments ()
