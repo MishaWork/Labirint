@@ -7,14 +7,26 @@ struct Object
     HDC Image;
     };
 
+struct MainObject
+    {
+    int X;
+    int Y;
+    HDC Image;
+    int StartX;
+    int StartY;
+    int CentX;
+    int CentY;
+    int Speed;
+    };
+
 void labirint ();
 void Turtle (int Length, int Wight, HDC Lab);
 int Distance (int X1, int Y1, int X2, int Y2);
 void Movments ();
 int DistanceEnemie (int TurtleX, int TurtleY, int EnemieX, int EnemieY);
-void LifeCounting (int *Life, COLORREF Pixel, int *TurtleX, int *TurtleY, int StartTurtleX, int StartTurtleY, int MaxLife, HDC Message);
-void Levels (int *Level, HDC Lab, HDC Labirint, int Distance1, int *TurtleX, int *TurtleY, int Length, int Wight, int StartTurtleX, int StartTurtleY);
-void Controlling (Object *Turtle, int TurtleSpeed, Object TurtleCent, int *xSource);
+void LifeCounting (int *Life, COLORREF Pixel, MainObject Turtle, int MaxLife, HDC Message);
+void Levels (MainObject Turtle, int *Level, HDC Lab, HDC Labirint, int Distance1, int Length, int Wight);
+void Controlling (MainObject Turtle, int *xSource);
 
 
 int main ()
@@ -61,14 +73,8 @@ void Turtle (int Length, int Wight, HDC Lab)
     Object CoinBad = {1640, 240, txLoadImage ("coinBad.bmp")};
     if (CoinBad.Image == NULL) { txMessageBox ("coinBad.bmp isn't found"); return; }
 
-    Object StartTurtle = {150, 460};
-
-    Object Turtle = {StartTurtle.X, StartTurtle.Y, txLoadImage ("turtle.bmp")};
+    MainObject Turtle = {150, 460, txLoadImage ("turtle.bmp"), 150, 460, txGetExtentX (Turtle.Image)/4/2, txGetExtentY (Turtle.Image)/2, 5};
     if (Turtle.Image == NULL) { txMessageBox ("turtle.bmp isn't found"); return; }
-
-    Object TurtleCent = {txGetExtentX (Turtle.Image)/4/2, txGetExtentY (Turtle.Image)/2};
-
-    const int TurtleSpeed = 5;
 
     const int MaxLife = 9;
 
@@ -99,7 +105,7 @@ void Turtle (int Length, int Wight, HDC Lab)
         int DistanceCoinB = Distance (Turtle.X, Turtle.Y, CoinBad.X, CoinBad.Y);
 
 
-        Levels (&Level, Lab, Labirint, Distance1, &Turtle.X, &Turtle.Y, Length, Wight, StartTurtle.X, StartTurtle.Y);
+        Levels (Turtle, &Level, Lab, Labirint, Distance1, Length, Wight);
 
         //printf ("Distance1 %d\n", Distance1);
 
@@ -114,7 +120,7 @@ void Turtle (int Length, int Wight, HDC Lab)
 
         printf (" потерял жизнь%d\n", Life);
 
-        COLORREF Pixel = txGetPixel (Turtle.X+TurtleCent.X, Turtle.Y+TurtleCent.Y);
+        COLORREF Pixel = txGetPixel (Turtle.X+Turtle.CentX, Turtle.Y+Turtle.CentY);
 
         //printf ("Pixel %d\n", Pixel);
 
@@ -122,9 +128,9 @@ void Turtle (int Length, int Wight, HDC Lab)
 
         txAlphaBlend (txDC (), CoinBad.X, CoinBad.Y, CoinAb, 0, CoinBad.Image);
 
-        txAlphaBlend (txDC (), Turtle.X, Turtle.Y, TurtleCent.X*2, 0, Turtle.Image, xSource);
+        txAlphaBlend (txDC (), Turtle.X, Turtle.Y, Turtle.CentX*2, 0, Turtle.Image, xSource);
         txSetFillColor (TX_PINK);
-        txCircle (Turtle.X+TurtleCent.X, Turtle.Y+TurtleCent.Y, 2);
+        txCircle (Turtle.X+Turtle.CentX, Turtle.Y+Turtle.CentY, 2);
 
         txSetFillColor (TX_BLACK);
 
@@ -140,9 +146,9 @@ void Turtle (int Length, int Wight, HDC Lab)
 
         txTextOut (1795, -15, Str);
 
-        LifeCounting (&Life, Pixel, &Turtle.X, &Turtle.Y, StartTurtle.X, StartTurtle.Y, MaxLife, Message);
+        LifeCounting (&Life, Pixel, Turtle, MaxLife, Message);
 
-        Controlling (&Turtle, TurtleSpeed, TurtleCent, &xSource);
+        Controlling (Turtle, &xSource);
 
         txSetColor (TX_PINK);
 
@@ -210,7 +216,7 @@ void LifeCounting (int *Life, COLORREF Pixel, int *TurtleX, int *TurtleY, int St
 
     }
 
-void Levels (int *Level, HDC Lab, HDC Labirint, int Distance1, int *TurtleX, int *TurtleY, int Length, int Wight, int StartTurtleX, int StartTurtleY)
+void Levels (MainObject *Turtle, int *Level, HDC Lab, HDC Labirint, int Distance1, int Length, int Wight)
     {
     if (*Level == 1)
         {
@@ -225,8 +231,8 @@ void Levels (int *Level, HDC Lab, HDC Labirint, int Distance1, int *TurtleX, int
     if (Distance1 < 10)
         {
         *Level = 2;
-        *TurtleX = StartTurtleX;
-        *TurtleY = StartTurtleY+150;
+        Turtle->X = StartTurtleX;
+        Turtle->Y = StartTurtleY+150;
         }
     }
 
