@@ -24,9 +24,9 @@ void Turtle (int Length, int Wight, HDC Lab);
 int Distance (int X1, int Y1, int X2, int Y2);
 void Movments ();
 int DistanceEnemie (int TurtleX, int TurtleY, int EnemieX, int EnemieY);
-void LifeCounting (int *Life, COLORREF Pixel, MainObject Turtle, int MaxLife, HDC Message);
-void Levels (MainObject Turtle, int *Level, HDC Lab, HDC Labirint, int Distance1, int Length, int Wight);
-void Controlling (MainObject Turtle, int *xSource);
+void LifeCounting (int *Life, COLORREF Pixel, MainObject *Turtle, int MaxLife, HDC Message);
+void Levels (MainObject *Turtle, int *Level, HDC Lab, HDC Labirint, int Distance1, int Length, int Wight);
+void Controlling (MainObject *Turtle, int *xSource);
 
 
 int main ()
@@ -105,7 +105,7 @@ void Turtle (int Length, int Wight, HDC Lab)
         int DistanceCoinB = Distance (Turtle.X, Turtle.Y, CoinBad.X, CoinBad.Y);
 
 
-        Levels (Turtle, &Level, Lab, Labirint, Distance1, Length, Wight);
+        Levels (&Turtle, &Level, Lab, Labirint, Distance1, Length, Wight);
 
         //printf ("Distance1 %d\n", Distance1);
 
@@ -146,9 +146,12 @@ void Turtle (int Length, int Wight, HDC Lab)
 
         txTextOut (1795, -15, Str);
 
-        LifeCounting (&Life, Pixel, Turtle, MaxLife, Message);
+        LifeCounting (&Life, Pixel, &Turtle, MaxLife, Message);
+        //LifeCounting (int *Life, COLORREF Pixel, MainObject Turtle, int MaxLife, HDC Message);
+        void LifeCounting (int *Life, COLORREF Pixel, MainObject *Turtle, int MaxLife, HDC Message);
 
-        Controlling (Turtle, &xSource);
+
+        Controlling (&Turtle, &xSource);
 
         txSetColor (TX_PINK);
 
@@ -172,13 +175,16 @@ void Turtle (int Length, int Wight, HDC Lab)
             Turtle.Y = 90;
             }
 
-        if (Pixel == RGB (255, 0, 0)) Life = MaxLife;
+        if (Pixel == RGB (255, 0, 0))
+            {
+            Life = MaxLife;
+            }
 
         txSleep (100);
         }
 
-    txDeleteDC (Turtle.Image);
-    txDeleteDC (Labirint);
+        txDeleteDC (Turtle.Image);
+        txDeleteDC (Labirint);
 
     }
 
@@ -188,7 +194,8 @@ int Distance (int X1, int Y1, int X2, int Y2)
 
     }
 
-void LifeCounting (int *Life, COLORREF Pixel, int *TurtleX, int *TurtleY, int StartTurtleX, int StartTurtleY, int MaxLife, HDC Message)
+void LifeCounting (int *Life, COLORREF Pixel, MainObject *Turtle, int MaxLife, HDC Message)
+//LifeCounting (int *Life, COLORREF Pixel, MainObject *Turtle, int MaxLife, HDC Message);
     {
     if (Pixel == TX_BLACK)
         {
@@ -197,26 +204,28 @@ void LifeCounting (int *Life, COLORREF Pixel, int *TurtleX, int *TurtleY, int St
 
     if (*Life == 0)
         {
-        *TurtleX = StartTurtleX;
-        *TurtleY = StartTurtleY;
+        Turtle->X = Turtle->StartX;
+        Turtle->Y = Turtle->StartY;
         }
 
-    if (*TurtleX == StartTurtleX && *TurtleY == StartTurtleY)
+    if (Turtle->X == Turtle->StartX && Turtle->Y == Turtle->StartY)
         {
         *Life = MaxLife;
         }
 
     if (*Life == 1)
         {
-        txAlphaBlend (txDC (), *TurtleX + 10, *TurtleY - 40, 0, 0, Message);
+        txAlphaBlend (txDC (), Turtle->X + 10, Turtle->Y - 40, 0, 0, Message);
         txSetColor (TX_YELLOW);
         txSelectFont ("Comic Sans MS", 13);
-        txTextOut (*TurtleX + 13, *TurtleY - 32, "Осталась одна жизнь");
+        txTextOut (Turtle->X + 13, Turtle->Y - 32, "Осталась одна жизнь");
         }
 
     }
 
 void Levels (MainObject *Turtle, int *Level, HDC Lab, HDC Labirint, int Distance1, int Length, int Wight)
+//void Levels (MainObject *Turtle, int *Level, HDC Lab, HDC Labirint, int Distance1, int Length, int Wight);
+
     {
     if (*Level == 1)
         {
@@ -231,19 +240,26 @@ void Levels (MainObject *Turtle, int *Level, HDC Lab, HDC Labirint, int Distance
     if (Distance1 < 10)
         {
         *Level = 2;
-        Turtle->X = StartTurtle-X;
-        Turtle->Y = StartTurtleY+150;
+        Turtle->X = Turtle->StartX;
+        Turtle->Y = Turtle->StartY+150;
         }
     }
 
-void Controlling (Object *Turtle, int TurtleSpeed, Object TurtleCent, int *xSource)
+void Controlling (MainObject *Turtle, int *xSource)
     {
-    if (GetAsyncKeyState (VK_RIGHT)) {(*Turtle).X = (*Turtle).X + TurtleSpeed*2,   *xSource = 0;}
-    if (GetAsyncKeyState (VK_LEFT))  {(*Turtle).X = (*Turtle).X - TurtleSpeed*2,   *xSource = TurtleCent.X*4;}
-    if (GetAsyncKeyState (VK_UP))    {(*Turtle).Y = (*Turtle).Y - TurtleSpeed*2,   *xSource = TurtleCent.X*2;}
-    if (GetAsyncKeyState (VK_DOWN))  {(*Turtle).Y = (*Turtle).Y + TurtleSpeed*2,   *xSource = TurtleCent.X*6;}
+    if (GetAsyncKeyState (VK_RIGHT)) {(*Turtle).X = (*Turtle).X + Turtle->Speed*2,   *xSource = 0;}
+    if (GetAsyncKeyState (VK_LEFT))  {(*Turtle).X = (*Turtle).X - Turtle->Speed*2,   *xSource = Turtle->CentX*4;}
+    if (GetAsyncKeyState (VK_UP))    {(*Turtle).Y = (*Turtle).Y - Turtle->Speed*2,   *xSource = Turtle->CentX*2;}
+    if (GetAsyncKeyState (VK_DOWN))  {(*Turtle).Y = (*Turtle).Y + Turtle->Speed*2,   *xSource = Turtle->CentX*6;}
     }
 
+
+
+
+
+
+
+                                                                   
 void Movments ()
     {
     HDC Turtle = txLoadImage ("1.bmp");
@@ -311,7 +327,7 @@ void Movments ()
         if (TurtleY >= 800) TurtleY = 800;
         if (TurtleY <= 10)  TurtleY = 800;
 
-        int distance = DistanceEnemie (TurtleX, TurtleY, EnemieX, EnemieY);
+        int distance = Distance (TurtleX, EnemieX, TurtleY, EnemieY);
 
         //printf ("я медведь %d\n", distance);
         printf ("я медведь %d\n", TurtleY);
@@ -358,10 +374,10 @@ void Movments ()
     txDeleteDC (Enemie);
     }
 
-int DistanceEnemie (int TurtleX, int TurtleY, int EnemieX, int EnemieY)
-    {
-    return sqrt ((TurtleX - EnemieX) * (TurtleX - EnemieX) + (TurtleY - EnemieY) * (TurtleY - EnemieY));
-    }
+//int DistanceEnemie (int TurtleX, int TurtleY, int EnemieX, int EnemieY)
+    //{
+    //return sqrt ((TurtleX - EnemieX) * (TurtleX - EnemieX) + (TurtleY - EnemieY) * (TurtleY - EnemieY));
+    //}
 
 
 

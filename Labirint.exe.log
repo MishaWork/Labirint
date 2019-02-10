@@ -4001,3 +4001,86 @@ Run file:	C:\Users\Mihail\Desktop\c++\Labirint\Labirint.exe
 Directory:	C:\Users\Mihail\Desktop\c++\Labirint
 
 --------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Mihail\Desktop\c++\Labirint\Labirint.exe, файл: C:\Users\Mihail\Desktop\TX\TXLib.h, строка: 10801, функция: POINT {anonymous}::TX::txGetExtent(HDC),
+
+Сообщение: Обнаружен нулевой или ложный результат.
+
+#1: TXLib [Ver: 00173a, Rev: 105, Date: 2018-12-19 00:00:00 +0300], Instance: 0x004FF2D4 (32-bit), Flags: CMdRe0, Thread: 0x570 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00418F04 in C:\Users\Mihail\Desktop\c++\Labirint\Labirint.exe: txGetExtent() at C:/Users/Mihail/Desktop/TX/TXLib.h (10801)
+# 1 0x004204AD in C:\Users\Mihail\Desktop\c++\Labirint\Labirint.exe: txAlphaBlend() at C:/Users/Mihail/Desktop/TX/TXLib.h (11421)
+
+# 2 0x00426EDE in C:\Users\Mihail\Desktop\c++\Labirint\Labirint.exe: Turtle() at C:/Users/Mihail/Desktop/c++/Labirint/Labirint.cpp (131):
+
+    129:         txAlphaBlend (txDC (), CoinBad.X, CoinBad.Y, CoinAb, 0, CoinBad.Image);
+    130: 
+=>  131:         txAlphaBlend (txDC (), Turtle.X, Turtle.Y, Turtle.CentX*2, 0, Turtle.Image, xSource);
+    132:         txSetFillColor (TX_PINK);
+    133:         txCircle (Turtle.X+Turtle.CentX, Turtle.Y+Turtle.CentY, 2);
+
+# 3 0x004266FA in C:\Users\Mihail\Desktop\c++\Labirint\Labirint.exe: labirint() at C:/Users/Mihail/Desktop/c++/Labirint/Labirint.cpp (55):
+
+     53:     int Wight = txGetExtentX (Lab);
+     54: 
+=>   55:     Turtle (Length, Wight, Lab);
+     56: 
+     57:     txDeleteDC (Lab);
+
+# 4 0x00426633 in C:\Users\Mihail\Desktop\c++\Labirint\Labirint.exe: main() at C:/Users/Mihail/Desktop/c++/Labirint/Labirint.cpp (39):
+
+     37:     txUpdateWindow (false);
+     38: 
+=>   39:     labirint ();
+     40: 
+     41: 
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in POINT {anonymous}::TX::txGetExtent(HDC) at C:\Users\Mihail\Desktop\TX\TXLib.h (10801):
+
+  10799: 
+  10800: $   BITMAP bmap = {0};
+=>10801: $   txGDI (Win32::GetObject (Win32::GetCurrentObject (dc, OBJ_BITMAP), sizeof (bmap), &bmap), dc) asserted;
+  10802: 
+  10803: $   POINT  size = { bmap.bmWidth, bmap.bmHeight };
+
+# 1 in bool {anonymous}::TX::txAlphaBlend(HDC, double, double, double, double, HDC, double, double, double) at C:\Users\Mihail\Desktop\TX\TXLib.h (11421):
+
+  11419: $   if (_TX_HDC_FAILED (sourceImage)) return false;
+  11420: 
+=>11421: $   POINT size = txGetExtent (sourceImage);
+  11422: $   if (!width)  width  = size.x;
+  11423: $   if (!height) height = size.y;
+
+# 2 in void Turtle(int, int, HDC) at C:\Users\Mihail\Desktop\c++\Labirint\Labirint.cpp (131):
+
+    129:         txAlphaBlend (txDC (), CoinBad.X, CoinBad.Y, CoinAb, 0, CoinBad.Image);
+    130: 
+=>  131:         txAlphaBlend (txDC (), Turtle.X, Turtle.Y, Turtle.CentX*2, 0, Turtle.Image, xSource);
+    132:         txSetFillColor (TX_PINK);
+    133:         txCircle (Turtle.X+Turtle.CentX, Turtle.Y+Turtle.CentY, 2);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 105, Date: 2018-12-19 00:00:00 +0300]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Mihail\Desktop\TX\TXLib.h
+Compiled:	Feb  3 2019 17:37:15, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Feb 03 2019 17:37:17
+
+Run file:	C:\Users\Mihail\Desktop\c++\Labirint\Labirint.exe
+Directory:	C:\Users\Mihail\Desktop\c++\Labirint
+
+--------------------------------------------------
