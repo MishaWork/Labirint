@@ -23,7 +23,7 @@ void labirint ();
 void Turtle (int Length, int Wight, HDC Lab);
 int Distance (int X1, int Y1, int X2, int Y2);
 void Movments ();
-int DistanceEnemie (int TurtleX, int TurtleY, int EnemieX, int EnemieY);
+//int DistanceEnemie (int TurtleX, int TurtleY, int EnemieX, int EnemieY);
 void LifeCounting (int *Life, COLORREF Pixel, MainObject *Turtle, int MaxLife, HDC Message);
 void Levels (MainObject *Turtle, int *Level, HDC Lab, HDC Labirint, int Distance1, int Length, int Wight);
 void Controlling (MainObject *Turtle, int *xSource);
@@ -382,10 +382,10 @@ void Movments ()
     txDeleteDC (Enemie.Image);
     }
 
-int DistanceEnemie (int TurtleX, int TurtleY, int EnemieX, int EnemieY)
-    {
-    return sqrt ((TurtleX - EnemieX) * (TurtleX - EnemieX) + (TurtleY - EnemieY) * (TurtleY - EnemieY));
-    }
+//int DistanceEnemie (int TurtleX, int TurtleY, int EnemieX, int EnemieY)
+    //{
+    //return sqrt ((TurtleX - EnemieX) * (TurtleX - EnemieX) + (TurtleY - EnemieY) * (TurtleY - EnemieY));
+    //}
 
 
 
