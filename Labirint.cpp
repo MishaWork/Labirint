@@ -245,7 +245,7 @@ void LifeCounting (int *Life, COLORREF Pixel, int *TurtleX, int *TurtleY, int St
         txAlphaBlend (txDC (), *TurtleX + 10, *TurtleY - 40, 0, 0, Message);
         txSetColor (TX_YELLOW);
         txSelectFont ("Comic Sans MS", 13);
-        txTextOut (*TurtleX + 13, *TurtleY - 32, "Осталась одна жизнь");
+        txTextOut (*TurtleX + 13, *TurtleY - 32, "ты скоро сдохнешь тупое ты создание ");
         }
 
     if (*Life == 9)

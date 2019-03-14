@@ -1,11 +1,5 @@
 #include "TXlib.h"
 
- struct object
-    {
-    int X, Y;
-    HDC Image;
-    };
-
 void labirint ();
 void Turtle (int Length, int Wight, HDC Lab);
 int Distance (int X1, int Y1, int X2, int Y2);
@@ -83,12 +77,11 @@ void Turtle (int Length, int Wight, HDC Lab)
     int SpikeX = 670;
     int SpikeY = 420;
 
-    object Coin = {};
-    Coin.x = 580;
-    Coin.Y = 500;
-    Coin.Image = txLoadImage ("coin.bmp");
-    
-    object CoinB = {1640, 240, txLoadImage ("coinBad.bmp")}; 
+    int CoinX = 580;
+    int CoinY = 500;
+
+    int CoinXb = 1640;
+    int CoinYb = 240;
 
     int SpikesOpened = 0;
 
@@ -290,6 +283,13 @@ void Controlling (int *TurtleX, int *TurtleY, int TurtleSpeed, int TurtleCentX, 
     if (GetAsyncKeyState (VK_UP))    {*TurtleY = *TurtleY - TurtleSpeed*2,   *xSource = TurtleCentX*2;}
     if (GetAsyncKeyState (VK_DOWN))  {*TurtleY = *TurtleY + TurtleSpeed*2,   *xSource = TurtleCentX*6;}
     }
+
+
+
+
+
+
+
 
 void Movments ()
     {
