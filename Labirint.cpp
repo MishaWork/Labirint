@@ -27,6 +27,7 @@ void Movments ();
 void LifeCounting (int *Life, COLORREF Pixel, MainObject *Turtle, int MaxLife, HDC Message);
 void Levels (MainObject *Turtle, int *Level, HDC Lab, HDC Labirint, int Distance1, int Length, int Wight);
 void Controlling (MainObject *Turtle, int *xSource);
+void Chest ();
 
 
 int main ()
@@ -45,7 +46,7 @@ void labirint ()
     {
 
 
-    HDC Lab = txLoadImage ("laberint.bmp");
+    HDC Lab = txLoadImage ("laberintnew.bmp");
     if (Lab == NULL) { txMessageBox ("laberint.bmp isn't found"); return; }
 
     int Length = GetSystemMetrics (SM_CXSCREEN);
@@ -106,6 +107,7 @@ void Turtle (int Length, int Wight, HDC Lab)
 
 
         Levels (&Turtle, &Level, Lab, Labirint, Distance1, Length, Wight);
+        Chest ();
 
         //printf ("Distance1 %d\n", Distance1);
 
@@ -199,7 +201,7 @@ void LifeCounting (int *Life, COLORREF Pixel, MainObject *Turtle, int MaxLife, H
     {
     if (Pixel == TX_BLACK)
         {
-        *Life = *Life - 1;
+        *Life = *Life-1;
         }
 
     if (*Life == 0)
@@ -251,6 +253,12 @@ void Controlling (MainObject *Turtle, int *xSource)
     if (GetAsyncKeyState (VK_LEFT))  {(*Turtle).X = (*Turtle).X - Turtle->Speed*2,   *xSource = Turtle->CentX*4;}
     if (GetAsyncKeyState (VK_UP))    {(*Turtle).Y = (*Turtle).Y - Turtle->Speed*2,   *xSource = Turtle->CentX*2;}
     if (GetAsyncKeyState (VK_DOWN))  {(*Turtle).Y = (*Turtle).Y + Turtle->Speed*2,   *xSource = Turtle->CentX*6;}
+    }
+
+void Chest ()
+    {
+    HDC Chest = txLoadImage ("Chest.bmp");
+    if (Chest == NULL) { txMessageBox ("Chest.bmp isn't found"); return; }
     }
 
 
