@@ -1,26 +1,19 @@
-txAlphaBlend (txDC (), ChestX, ChestY, 0, 0, Chest);
-
-HDC Chest = txLoadImage ("chest.bmp");
-if (Chest == NULL) { txMessageBox ("chest.bmp isn't found"); return; }
-
-HDC Spikes = txLoadImage ("spikes.bmp");
-if (Spikes == NULL) { txMessageBox ("spikes.bmp isn't found"); return; }
-
-txAlphaBlend (txDC (), SpikeX, SpikeY, 0, 0, Spikes);
-
-
-if (DistanceChest < 30)
-    {
-    SpikesOpened = 1;
-    }
+    HDC Chest = txLoadImage ("chest.bmp");
+    if (Chest == NULL) { txMessageBox ("chest.bmp isn't found"); return; }
     
-
-if (DistanceSpikes < 30 && SpikesOpened == 0)
-    {
-    Life = 0;
-    }
+    HDC Spikes = txLoadImage ("spikes.bmp");
+    if (Spikes == NULL) { txMessageBox ("spikes.bmp isn't found"); return; }
     
-if (DistanceChest < 30)
-    {
-    SpikesOpened = 1;
-    }
+    txAlphaBlend (txDC (), ChestX, ChestY, 0, 0, Chest);
+
+    txAlphaBlend (txDC (), SpikeX, SpikeY, 0, 0, Spikes);
+    
+    if (DistanceSpikes < 30 && SpikesOpened == 0)
+            {
+            Life = 0;
+            }
+            
+    if (DistanceChest < 30)
+            {
+            SpikesOpened = 1;
+            }
