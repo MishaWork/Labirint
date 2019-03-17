@@ -1,12 +1,26 @@
+txAlphaBlend (txDC (), ChestX, ChestY, 0, 0, Chest);
 
-#include "TXLib.h"
+HDC Chest = txLoadImage ("chest.bmp");
+if (Chest == NULL) { txMessageBox ("chest.bmp isn't found"); return; }
 
-int main()
+HDC Spikes = txLoadImage ("spikes.bmp");
+if (Spikes == NULL) { txMessageBox ("spikes.bmp isn't found"); return; }
+
+txAlphaBlend (txDC (), SpikeX, SpikeY, 0, 0, Spikes);
+
+
+if (DistanceChest < 30)
     {
-    txCreateWindow (800, 600);
-
-    
-
-    return 0;
+    SpikesOpened = 1;
     }
 
+
+if (DistanceSpikes < 30 && SpikesOpened == 0)
+    {
+    Life = 0;
+    }
+
+if (DistanceChest < 30)
+    {
+    SpikesOpened = 1;
+    }
