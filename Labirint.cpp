@@ -27,7 +27,7 @@ void Movments ();
 void LifeCounting (int *Life, COLORREF Pixel, MainObject *Turtle, int MaxLife, HDC Message);
 void Levels (MainObject *Turtle, int *Level, HDC Lab, HDC Labirint, int Distance1, int Length, int Wight);
 void Controlling (MainObject *Turtle, int *xSource);
-void Chest ();
+
 
 
 int main ()
@@ -77,6 +77,12 @@ void Turtle (int Length, int Wight, HDC Lab)
     MainObject Turtle = {150, 460, txLoadImage ("turtle.bmp"), 150, 460, txGetExtentX (Turtle.Image)/4/2, txGetExtentY (Turtle.Image)/2, 5};
     if (Turtle.Image == NULL) { txMessageBox ("turtle.bmp isn't found"); return; }
 
+    HDC Chest = txLoadImage ("chest.bmp");
+    if (Chest == NULL) { txMessageBox ("chest.bmp isn't found"); return; }
+
+    HDC Spikes = txLoadImage ("spikes.bmp");
+    if (Spikes == NULL) { txMessageBox ("spikes.bmp isn't found"); return; }
+
     const int MaxLife = 9;
 
     int CoinA = txGetExtentX (Coin.Image);
@@ -107,7 +113,6 @@ void Turtle (int Length, int Wight, HDC Lab)
 
 
         Levels (&Turtle, &Level, Lab, Labirint, Distance1, Length, Wight);
-        Chest ();
 
         //printf ("Distance1 %d\n", Distance1);
 
@@ -133,6 +138,10 @@ void Turtle (int Length, int Wight, HDC Lab)
         txAlphaBlend (txDC (), Turtle.X, Turtle.Y, Turtle.CentX*2, 0, Turtle.Image, xSource);
         txSetFillColor (TX_PINK);
         txCircle (Turtle.X+Turtle.CentX, Turtle.Y+Turtle.CentY, 2);
+
+        txAlphaBlend (txDC (), ChestX, ChestY, 0, 0, Chest);
+
+        txAlphaBlend (txDC (), SpikeX, SpikeY, 0, 0, Spikes);
 
         txSetFillColor (TX_BLACK);
 
@@ -253,12 +262,6 @@ void Controlling (MainObject *Turtle, int *xSource)
     if (GetAsyncKeyState (VK_LEFT))  {(*Turtle).X = (*Turtle).X - Turtle->Speed*2,   *xSource = Turtle->CentX*4;}
     if (GetAsyncKeyState (VK_UP))    {(*Turtle).Y = (*Turtle).Y - Turtle->Speed*2,   *xSource = Turtle->CentX*2;}
     if (GetAsyncKeyState (VK_DOWN))  {(*Turtle).Y = (*Turtle).Y + Turtle->Speed*2,   *xSource = Turtle->CentX*6;}
-    }
-
-void Chest ()
-    {
-    HDC Chest = txLoadImage ("Chest.bmp");
-    if (Chest == NULL) { txMessageBox ("Chest.bmp isn't found"); return; }
     }
 
 
