@@ -1,4 +1,4 @@
-#include "TXlib.h"
+ #include "TXlib.h"
 
 struct Object
     {
@@ -96,6 +96,12 @@ void Turtle (int Length, int Wight, HDC Lab)
     int Life = MaxLife;
 
     int xSource = 0;
+
+    int ChestX = 1250;
+    int ChestY = 60;
+
+    int SpikeX = 660;
+    int SpikeY = 420;
 
     while (!GetAsyncKeyState ('P'))
         {
